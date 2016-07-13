@@ -151,4 +151,61 @@ fn main() {
     //3. A slice is a view into a piece of data, right now it seems you only slice arrays, but I'm sure that changes later on
     //4. Rust's str type is more primitive than it's char type? I guess so.
     //5 Read &str as a string slice
+
+// 4.4 Comments - SKIPPED!
+
+//4.5 If - SKIPPED!
+
+//4.6 Loops
+
+    //commented out so program ends!
+    // loop {
+    //     println!("loop forever!")
+    // }
+    let mut x : i32 = 1;
+    let mut done : bool = false;
+    while !done {
+        x = x + 1;
+        if x == 21 {
+            done = true;
+        }
+    }
+    println!("x after loop is: {}", x);
+
+    for (k, j) in (0..9).enumerate() {
+        println!("x^2 is {}, called the {}th time", k*k, j);
+    }
+
+    let lines = "hello\nworld".lines();
+    println!("lines: {:?}", lines);
+
+    let linesEnum = lines.enumerate();
+    println!("lines enum: {:?}", linesEnum);
+
+    for (linenumber, line) in linesEnum {
+        println!("{} : {}", linenumber, line);
+    }
+
+    let charsEnum = "hello world".chars().enumerate();
+    for (charNumber, charItem) in charsEnum {
+        println!("{} : {}", charNumber, charItem);
+    }
+
+    let mut blah = 5;
+    loop {
+        blah = blah + 1;
+        if blah % 10 == 0 {
+            break;
+        }
+    }
+    println!("blah is: {}", blah);
+
+    'outer: for x in 0..10 {
+        'inner: for y in 0..10 {
+            if x % 2 == 0 { continue 'outer; } // continues the loop over x
+            if y % 2 == 0 { continue 'inner; } // continues the loop over y
+            println!("x: {}, y: {}", x, y);
+        }
+    }
+
 }
