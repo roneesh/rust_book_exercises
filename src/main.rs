@@ -249,4 +249,87 @@ fn main() {
     //3. You can use macro notation to create them
     //4. You can't directly refer to them more than once, otherwise too many blocks own it
 
+//4.8 Ownership - 4.10 Lifetimes
+
+    let v = 1; //i32
+
+    let v2 = v; 
+
+    //works because i32 has copy trait 
+    println!("v is: {}", v);
+
+    let a : i32 = 5; //i32 has copy trait
+    let _y = double(a);
+
+    fn double(x: i32) -> i32 {
+        x * 2
+    }
+
+    let b : bool = false;
+    let c : bool = flip(b);
+
+    fn flip(x: bool) -> bool {
+        !x
+    }
+
+    
+    // This is the example in the book of the nasty function, that takes ownership of vectors and then gives them back
+    fn boo(v1: Vec<i32>, v2: Vec<i32>) -> (Vec<i32>, Vec<i32>, i32) {
+        // do stuff with v1 and v2
+
+        // hand back ownership, and the result of our function
+        (v1, v2, 42)
+    }
+
+    let v1 = vec![1, 2, 3];
+    let v2 = vec![1, 2, 3];
+
+    let (v1, v2, answer) = boo(v1, v2);
+    // *END NASTY EXAMPLE*
+    // So let's talk through nasty example...
+    //1. We have a function foo, and it takes two Vectors, since Vectors don't do the copy trait, owernship is now transferred to this function
+    //2. If we don't return the Vectors in our last line, those vectors can never again be used by the main() funciton which called foo()
+    //3. So the function returns this tuple of (Vec1, Vec2, i32);
+    //4. Our code thne, re-binds v1 and v2 in the tuple line (the line of `let (v1,v2,answer) = foo(v1,v2)`)
+    //5. We don't want to have to do this in every function we write!! It would stink!
+    //6. So instead we pass to foo two vectors that are "Borrowed" 
+
+    // This is the good version, that uses Borrowing
+    fn noo(v1: &Vec<i32>, v2: &Vec<i32>) -> i32 {
+        // do stuff with v1 and v2
+
+        // return the answer
+        42
+    }
+
+    let v1 = vec![1, 2, 3];
+    let v2 = vec![1, 2, 3];
+
+    let answer = noo(&v1, &v2);
+    // *END GOOD EXAMPLE*
+    // So let's talk through good example...
+    //1. we call foo with '&v1' and '&v2' args, so foo has borrowed v1 and v2
+    //2. When it is done, it gives ownership back to the calling function
+    //3. And the function then only has to return it's new data in our program, the i32, and doesn't have to return Vecs that get re-binded
+
+
+    //An example of mutable Borrowing
+    let mut x = 5;
+    {
+        let y = &mut x;
+        *y = *y + 1;
+    }
+    println!("x is now {}", x);
+
+    // Lifetimes are complicated...
+    // 'a 'b are lifetimes a and lifetime b
+
+    //Conclusions:
+    //1. The reason ownership rules exist is because some data is so complex, it has to be stored between both the stack and the heap, meaning a stack data points to heap data, and if we have two variables with stack data pointing to the same heap data, then they are implicitly in a race condition, you can't access one without know if the other is accessing it first. 
+    //2. Simple data like i32 or Booleans have the copy trait, which allows multiple variable bindings to own the data, because the data is so simple it can live only in the stack.
+    //3. Borrowed data can't be mutated unless it's borrowed with `&mut`, vs regular `&`
+    //4. Right now all I can make sense of with lifetimes is that they are defined with a 'name syntax, and they are used in function defintions
+
+// 4.11 Mutability
+
 }
