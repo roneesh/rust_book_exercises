@@ -208,4 +208,45 @@ fn main() {
         }
     }
 
+    //Conclusions:
+    //1. Break loops early with break, skip ahead with continue;
+    //2. The idiomatic for loop is a lot like Javascripts for/in syntax
+    //3. Use .enumerate when you need to keep track of the index of the enumerated charItem
+
+//4.7
+
+    let v = vec![1,2,3,4,5];// v: Vec<i32>
+    let v = vec![0; 10]; // ten i32 zeroes;
+
+    println!("element 3 of v is : {}", v[3]);
+
+    match v.get(7) {
+        Some(x) => println!("{}", x),
+        None => println!("Sorry this vector is too short!")
+    }
+
+    //Doesn't work!
+    // for i in v {
+    //     println!("Take ownership of the vector and its element {}", i);
+    // }
+
+    // for i in v {
+    //     println!("Take ownership of the vector and its element {}", i);
+    // }
+
+    //works!
+    for i in &v {
+        println!("This is a reference to {}", i);
+    }
+
+    for i in &v {
+        println!("This is a reference to {}", i);
+    }
+
+    //Conclusions:
+    //1. Vectors also use bracket notation to get values
+    //2. They are similar to arrays, but unbounded
+    //3. You can use macro notation to create them
+    //4. You can't directly refer to them more than once, otherwise too many blocks own it
+
 }
