@@ -330,6 +330,72 @@ fn main() {
     //3. Borrowed data can't be mutated unless it's borrowed with `&mut`, vs regular `&`
     //4. Right now all I can make sense of with lifetimes is that they are defined with a 'name syntax, and they are used in function defintions
 
-// 4.11 Mutability
+//4.11 Mutability - SKIPPED
+
+//4.12 Structs
+
+    struct Point {
+        x: i32,
+        y: i32,
+    }
+
+    let origin = Point {
+        x: 0,
+        y: 0
+    };
+
+    //we can access properties via dot, just like Javascript!
+    println!("Origin at: {}, {}", origin.x, origin.y);
+
+    let mut o2 = Point {
+        x: 0,
+        y: 1
+    };
+    o2.y = 2;
+    let o2 = o2;
+
+    println!("Origin at: {}, {}", o2.x, o2.y);
+
+    // Have to include this compiler flag so Point3d gets a debug trait
+    #[derive(Debug)]
+    struct Point3d {
+        x: i32,
+        y: i32,
+        z: i32
+    }
+
+    let mut point = Point3d {
+        x:0, y:0, z:0
+    };
+    point = Point3d { y: 1, .. point};
+    println!("Point3d: {:?}", point);
+
+    // Tuple Structs
+    struct Color(i32, i32, i32);
+    {
+        struct Point(i32, i32, i32);
+        let origin = Point(0,0,0);
+    }
+
+    let black = Color(0,0,0);
+    let white = Color(255,255,255);
+
+    // Almost never use Tubple Structs!
+    // Unless your struct has one piece of data only!
+
+    struct Inches(i32);
+    let length = Inches(10);
+
+    struct Electron;
+    let x = Electron;
+
+    //Conclusions
+    //1. A struct is perhaps most like a JS object,
+    //   except maybe it's more like a class in Ruby?
+    //2. Only the whole object can be mutable, not individual properties, which is good
+    //3. Structs need to be given a debug trait to be logable!
+    //4. Tuple structs and empty structs are rarer, generally go wtih plain structs!
+
+//4.13 Enums
 
 }
