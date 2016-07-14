@@ -398,4 +398,81 @@ fn main() {
 
 //4.13 Enums
 
+    #[derive(Debug)]
+    enum Message {
+        Quit,
+        ChangeColor(i32, i32, i32),
+        Move { x: i32, y: i32},
+        Write(String),
+    }
+
+    let x: Message = Message::Move {x: 3, y: 4};
+    
+    #[derive(Debug)]
+    enum BoardGameTurn {
+        Move { squares: i32 },
+        Pass,
+    }
+
+    let y: BoardGameTurn = BoardGameTurn::Pass {};
+
+    println!("Message enum: {:?}", x);
+    println!("BGTurn enum: {:?}", y);
+
+    let m = Message::Write("Hello, world".to_string());
+
+    fn MessageWriter(x: String) -> Message {
+        Message::Write(x)
+    }
+
+    let m2 = MessageWriter("Hello, World".to_string());
+
+    println!("{:?}, {:?}", m, m2);
+    //Conclusions
+    //1. It seems like enum's are built in state machines, but it's not explicitly said!
+    //2. Not sure exactly what you'd use them for otherwise...
+    //3. Combined with matches, enums can be central control structurs of your program.
+
+//4.14 match
+
+    let x = 6;
+
+    match x {
+        1 => println!("one"),
+        5 => println!("five"),
+        _ => println!("not 1 or 5!"),
+    }
+
+    //Match with Enum
+    fn quit() { println!("quit()"); }
+    fn change_color(r: i32, g: i32, b: i32) { println!("change_color()");}
+    fn move_cursor(x: i32, y: i32) { println!("move()"); }
+
+    fn process_message(m : Message) {
+        match m {
+            Message::Quit => quit(),
+            Message::ChangeColor(r,g,b) => change_color(r, g, b),
+            Message::Move{x: x, y: y} => move_cursor(x,y),
+            Message::Write(x) => println!("{}", x),
+        }
+    }
+
+    let mut m : Message = Message::Quit;
+
+    process_message(m);
+
+    m = Message::Move{x: 150, y: 150};
+
+    process_message(m);
+
+    //Conclusions
+    //1. Match enforces exhaustiveness checking, it needs the _ of all options
+    //2. A case can just be a number
+    //3. By making your enum mutable, you can change it's state and then re-process it;
+    //4. Enums combined with structs can implement Class-like behavior
+
+//4.15 Patterns - SKIPPED
+
+//4.16 Method Syntax
+
 }
